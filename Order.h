@@ -17,6 +17,9 @@ public:
   inline int getQty() const { return m_qty; };
   inline bool getSide() const { return m_isBuy; };
   inline int getPrice() const { return m_price; };
+  inline string getOrderNumber() const { return m_orderNumber; };
+  inline string getTrader() const { return m_trader; };
+  inline string getSessionName() const { return m_sessionName; };
 
 private:
   string    m_securityDesc;

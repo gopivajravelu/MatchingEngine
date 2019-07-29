@@ -27,6 +27,11 @@ int main() {
   engine->addOrder(order9);
   engine->printOrders();
 
+  engine->cancelOrder(order8);
+  engine->cancelOrder(order6);
+  engine->cancelOrder(order5);
+  engine->printOrders();
+
   if(engine)
     delete engine;
   cout << "Stopping matching engine" << endl;

@@ -48,17 +48,25 @@ void MatchingEngine::printOrders()
   }
 }
 
-void MatchingEngine::addOrder(Order* newOrder)
+void MatchingEngine::addOrder(Order* order)
 {
-  map<string,OrderBook*>& sideMap = newOrder->getSide() ? m_buyOrderBookMap : m_sellOrderBookMap;
+  map<string,OrderBook*>& sideMap = order->getSide() ? m_buyOrderBookMap : m_sellOrderBookMap;
 
-  map<string,OrderBook*>::iterator it = sideMap.find(newOrder->getSecurityDesc());
+  map<string,OrderBook*>::iterator it = sideMap.find(order->getSecurityDesc());
   if(it == sideMap.end())
   {
-    OrderBook* book = new OrderBook(newOrder->getSide());
-    sideMap[newOrder->getSecurityDesc()] = book;
-    book->addOrder(newOrder);
+    OrderBook* book = new OrderBook(order->getSide());
+    sideMap[order->getSecurityDesc()] = book;
+    book->addOrder(order);
   }
   else
-    it->second->addOrder(newOrder);
+    it->second->addOrder(order);
+}
+
+void MatchingEngine::cancelOrder(Order* order)
+{
+  map<string,OrderBook*>& sideMap = order->getSide() ? m_buyOrderBookMap : m_sellOrderBookMap;
+  map<string,OrderBook*>::iterator it = sideMap.find(order->getSecurityDesc());
+  if(it != sideMap.end())
+    it->second->cancelOrder(order);
 }

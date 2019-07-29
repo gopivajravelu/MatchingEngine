@@ -14,7 +14,8 @@ public:
 
   void printOrderBook();
 
-  void addOrder(Order* newOrder);
+  void addOrder(Order* order);
+  void cancelOrder(Order* order);
 
 private:
   bool            m_isBuy;

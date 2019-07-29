@@ -14,7 +14,8 @@ public:
 
   void printOrders();
 
-  void addOrder(Order* newOrder);
+  void addOrder(Order* order);
+  void cancelOrder(Order* order);
 
 private:
   map<string,OrderBook*>      m_buyOrderBookMap;

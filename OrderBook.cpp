@@ -30,7 +30,7 @@ void OrderBook::printOrderBook()
   }
 }
 
-void OrderBook::addOrder(Order* newOrder)
+void OrderBook::addOrder(Order* order)
 {
   list<Order*>::iterator it     = m_orderBook.begin();
   list<Order*>::iterator it_end = m_orderBook.end();
@@ -38,9 +38,9 @@ void OrderBook::addOrder(Order* newOrder)
   {
     while(it != it_end)
     {
-      if((*it)->getPrice() < newOrder->getPrice())
+      if((*it)->getPrice() < order->getPrice())
       {
-        m_orderBook.insert(it,newOrder);
+        m_orderBook.insert(it,order);
         return;
       }
       ++it;
@@ -50,13 +50,31 @@ void OrderBook::addOrder(Order* newOrder)
   {
     while(it != it_end)
     {
-      if((*it)->getPrice() > newOrder->getPrice())
+      if((*it)->getPrice() > order->getPrice())
       {
-        m_orderBook.insert(it,newOrder);
+        m_orderBook.insert(it,order);
         return;
       }
       ++it;
     }
   }
-  m_orderBook.push_back(newOrder);
+  m_orderBook.push_back(order);
+}
+
+void OrderBook::cancelOrder(Order* order)
+{
+  list<Order*>::iterator it     = m_orderBook.begin();
+  list<Order*>::iterator it_end = m_orderBook.end();
+  while(it != it_end)
+  {
+    if((*it)->getOrderNumber() == order->getOrderNumber())
+    {
+      Order* orderToCancel = *it;
+      m_orderBook.erase(it);
+      if(orderToCancel)
+        delete orderToCancel;
+      return;
+    }
+    ++it;
+  }
 }
