@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Trade.h"
 
 Trade::Trade(const string& securityDesc, int qty, double price,
@@ -15,3 +16,8 @@ Trade::Trade(const string& securityDesc, int qty, double price,
 Trade::~Trade()
 {
 };
+
+void Trade::printTrade()
+{
+  cout << "SecurityDesc: " << m_securityDesc << " Qty: " << m_qty << " Price: " << m_price << endl;
+}

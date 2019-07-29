@@ -13,6 +13,8 @@ public:
         const string& execId);
   ~Trade();
 
+  void printTrade();
+
 private:
   string    m_securityDesc;
   int       m_qty;

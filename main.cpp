@@ -16,6 +16,8 @@ int main() {
   Order* order7 = new Order("GEZ9",5,false,9951,"0007","TEST2","FIRM2");
   Order* order8 = new Order("GEZ9",1,false,9953,"0008","TEST2","FIRM2");
   Order* order9 = new Order("GEZ9",1,false,9952,"0009","TEST2","FIRM2");
+  Order* order10 = new Order("GEZ9",1,false,9950,"0010","TEST2","FIRM2");
+  Order* order11 = new Order("GEZ9",2,false,9947,"0011","TEST2","FIRM2");
   engine->addOrder(order1);
   engine->addOrder(order2);
   engine->addOrder(order3);
@@ -31,6 +33,12 @@ int main() {
   engine->cancelOrder(order6);
   engine->cancelOrder(order5);
   engine->printOrders();
+
+
+  engine->addOrder(order10);
+  engine->addOrder(order11);
+  engine->printOrders();
+  engine->printTrades();
 
   if(engine)
     delete engine;

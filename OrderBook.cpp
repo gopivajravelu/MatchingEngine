@@ -30,6 +30,11 @@ void OrderBook::printOrderBook()
   }
 }
 
+Order* OrderBook::getTopOfBook()
+{
+  return m_orderBook.front();
+}
+
 void OrderBook::addOrder(Order* order)
 {
   list<Order*>::iterator it     = m_orderBook.begin();

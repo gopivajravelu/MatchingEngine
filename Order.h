@@ -21,6 +21,8 @@ public:
   inline string getTrader() const { return m_trader; };
   inline string getSessionName() const { return m_sessionName; };
 
+  inline void setQty(int qty) { m_qty = qty; };
+
 private:
   string    m_securityDesc;
   int       m_qty;

@@ -13,6 +13,7 @@ public:
   ~OrderBook();
 
   void printOrderBook();
+  Order* getTopOfBook();
 
   void addOrder(Order* order);
   void cancelOrder(Order* order);
