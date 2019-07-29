@@ -19,7 +19,7 @@ public:
 
   void addOrder(Order* order);
   void cancelOrder(Order* order);
-  bool checkForTrade(Order* order);
+  vector<Trade*> checkForTrade(Order* order);
 
 private:
   map<string,OrderBook*>      m_buyOrderBookMap;

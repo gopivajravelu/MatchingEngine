@@ -72,7 +72,7 @@ void MatchingEngine::printTrades()
 
 void MatchingEngine::addOrder(Order* order)
 {
-  checkForTrade(order);
+  vector<Trade*> newTrades = checkForTrade(order);
 
   if(order->getQty() > 0)
   {
@@ -88,6 +88,16 @@ void MatchingEngine::addOrder(Order* order)
     else
       it->second->addOrder(order);
   }
+
+  vector<Trade*>::iterator newTradeIt     = newTrades.begin();
+  vector<Trade*>::iterator newTradeIt_end = newTrades.end();
+  while(newTradeIt != newTradeIt_end)
+  {
+    // TO DO: notify sessions that traded of trades
+    m_trades.push_back(*newTradeIt);
+    ++newTradeIt;
+  }
+  newTrades.clear();
 }
 
 void MatchingEngine::cancelOrder(Order* order)
@@ -98,8 +108,10 @@ void MatchingEngine::cancelOrder(Order* order)
     it->second->cancelOrder(order);
 }
 
-bool MatchingEngine::checkForTrade(Order* order)
+vector<Trade*> MatchingEngine::checkForTrade(Order* order)
 {
+  vector<Trade*> newTrades;
+
   map<string,OrderBook*>& oppositeSideMap = order->getSide() ? m_sellOrderBookMap : m_buyOrderBookMap;
   map<string,OrderBook*>::iterator it = oppositeSideMap.find(order->getSecurityDesc());
   if(it != oppositeSideMap.end())
@@ -115,7 +127,7 @@ bool MatchingEngine::checkForTrade(Order* order)
           Trade* trade = new Trade(order->getSecurityDesc(),firstBuy->getQty(),
               order->getPrice(),firstBuy->getSessionName(),
               order->getSessionName(),"ExecId:ToDo");
-          m_trades.push_back(trade);
+          newTrades.push_back(trade);
           order->setQty(order->getQty()-firstBuy->getQty());
           firstBuy->setQty(0);
           it->second->cancelOrder(firstBuy);
@@ -125,7 +137,7 @@ bool MatchingEngine::checkForTrade(Order* order)
           Trade* trade = new Trade(order->getSecurityDesc(),order->getQty(),
               order->getPrice(),firstBuy->getSessionName(),
               order->getSessionName(),"ExecId:ToDo");
-          m_trades.push_back(trade);
+          newTrades.push_back(trade);
           firstBuy->setQty(firstBuy->getQty()-order->getQty());
           order->setQty(0);
         }
@@ -142,7 +154,7 @@ bool MatchingEngine::checkForTrade(Order* order)
           Trade* trade = new Trade(order->getSecurityDesc(),firstSell->getQty(),
               order->getPrice(),order->getSessionName(),
               firstSell->getSessionName(),"ExecId:ToDo");
-          m_trades.push_back(trade);
+          newTrades.push_back(trade);
           order->setQty(order->getQty()-firstSell->getQty());
           firstSell->setQty(0);
           it->second->cancelOrder(firstSell);
@@ -152,12 +164,12 @@ bool MatchingEngine::checkForTrade(Order* order)
           Trade* trade = new Trade(order->getSecurityDesc(),order->getQty(),
               order->getPrice(),order->getSessionName(),
               firstSell->getSessionName(),"ExecId:ToDo");
-          m_trades.push_back(trade);
+          newTrades.push_back(trade);
           firstSell->setQty(firstSell->getQty()-order->getQty());
           order->setQty(0);
         }
       }
     }
   }
-  return false;
+  return newTrades;
 }
